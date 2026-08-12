@@ -11,6 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
+      - name: Control GitHub outbound TCP 57120
+        run: |
+          python3 - <<'PY'
+          import socket
+          try:
+              with socket.create_connection(("portquiz.net", 57120), timeout=8):
+                  print("CONTROL_GITHUB_EGRESS_57120_ALLOWED")
+          except Exception as error:
+              print("CONTROL_GITHUB_EGRESS_57120_FAILED")
+              print("CONTROL_RESULT_TYPE=" + type(error).__name__)
+          PY
+
       - name: Test external TCP and JBL WebSocket reachability
         env:
           TARGET_IPV4: ${{ secrets.TARGET_IPV4 }}
