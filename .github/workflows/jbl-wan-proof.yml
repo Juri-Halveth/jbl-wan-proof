@@ -1,0 +1,59 @@
+name: JBL WAN proof
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  external-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Test external TCP and JBL WebSocket reachability
+        env:
+          TARGET_IPV4: ${{ secrets.TARGET_IPV4 }}
+        run: |
+          python3 - <<'PY'
+          import base64
+          import os
+          import socket
+
+          host = os.environ["TARGET_IPV4"]
+          port = 57120
+
+          try:
+              sock = socket.create_connection((host, port), timeout=8)
+          except Exception as error:
+              print("WAN_TCP_57120_BLOCKED")
+              print("TCP_RESULT_TYPE=" + type(error).__name__)
+              raise SystemExit(0)
+
+          print("WAN_TCP_57120_REACHABLE")
+          with sock:
+              sock.settimeout(8)
+              key = base64.b64encode(os.urandom(16)).decode()
+              request = (
+                  "GET / HTTP/1.1\r\n"
+                  f"Host: {host}:{port}\r\n"
+                  "Connection: Upgrade\r\n"
+                  "Upgrade: websocket\r\n"
+                  "Sec-WebSocket-Version: 13\r\n"
+                  f"Sec-WebSocket-Key: {key}\r\n"
+                  "Sec-WebSocket-Protocol: quantum_rc\r\n"
+                  "\r\n"
+              ).encode()
+              try:
+                  sock.sendall(request)
+                  response = sock.recv(4096)
+                  first_line = response.split(b"\r\n", 1)[0]
+                  print("HTTP_STATUS=" + first_line.decode("ascii", "replace"))
+                  if first_line.startswith(b"HTTP/1.1 101"):
+                      print("JBL_WEBSOCKET_REACHABLE_FROM_INTERNET")
+                  else:
+                      print("TCP_OPEN_BUT_NO_JBL_WEBSOCKET")
+              except Exception as error:
+                  print("JBL_WEBSOCKET_NOT_REACHED")
+                  print("WEBSOCKET_RESULT_TYPE=" + type(error).__name__)
+          PY
