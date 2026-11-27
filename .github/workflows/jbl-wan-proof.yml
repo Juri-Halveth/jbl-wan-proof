@@ -38,11 +38,11 @@ jobs:
           try:
               sock = socket.create_connection((host, port), timeout=8)
           except Exception as error:
-              print("WAN_TCP_57120_BLOCKED")
+              print("TCP_CONNECTION_NOT_ESTABLISHED_FROM_RUNNER")
               print("TCP_RESULT_TYPE=" + type(error).__name__)
               raise SystemExit(0)
 
-          print("WAN_TCP_57120_REACHABLE")
+          print("TCP_CONNECTION_ESTABLISHED_FROM_RUNNER")
           with sock:
               sock.settimeout(8)
               key = base64.b64encode(os.urandom(16)).decode()
@@ -61,11 +61,11 @@ jobs:
                   response = sock.recv(4096)
                   first_line = response.split(b"\r\n", 1)[0]
                   print("HTTP_STATUS=" + first_line.decode("ascii", "replace"))
-                  if first_line.startswith(b"HTTP/1.1 101"):
-                      print("JBL_WEBSOCKET_REACHABLE_FROM_INTERNET")
+                  if first_line.split()[:2] == [b"HTTP/1.1", b"101"]:
+                      print("HTTP_101_OBSERVED_HANDSHAKE_AND_SERVICE_UNVERIFIED")
                   else:
-                      print("TCP_OPEN_BUT_NO_JBL_WEBSOCKET")
+                      print("TCP_CONNECTED_HTTP_101_NOT_OBSERVED")
               except Exception as error:
-                  print("JBL_WEBSOCKET_NOT_REACHED")
+                  print("PROTOCOL_OBSERVATION_INCOMPLETE")
                   print("WEBSOCKET_RESULT_TYPE=" + type(error).__name__)
           PY
