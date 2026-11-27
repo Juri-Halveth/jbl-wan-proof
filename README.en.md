@@ -1,21 +1,13 @@
-[Original / Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
+[Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-# jbl-wan-proof
+# JBL WAN observation workflow — research by Juri
 
-**Concise project guide · EN / RU**
+**Juri (Juri-Halveth) · 27 November 2026**
 
-A private owner-controlled evidence repository. Its metadata describes an owner-authorized WAN exposure proof; no source README was present in the audited snapshot. This guide does not independently validate an exposure or assign a severity.
+**[Full report and retained evidence](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/REPORT.md)** · [English overview](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/README.en.md)
 
-Use the recorded commit and original files within the repository permissions. The guide adds a reading route and includes no payloads, credentials or private evidence contents.
+The manual workflow attempts a TCP connection from a GitHub runner to the supplied target on port 57120. If connected, it sends a WebSocket upgrade request and reads the first HTTP status line. An HTTP 101 observation alone verifies neither a complete WebSocket handshake nor the identity of a JBL service. [PR #2](https://github.com/Juri-Halveth/jbl-wan-proof/pull/2) corrects the output labels accordingly.
 
-This manually edited guide summarizes the audited source. The original technical documentation remains the reference for commands, build requirements, exact versions and detailed evidence.
+The two August job logs were unavailable with HTTP 410 on 27 November. The workflow can exit successfully even when TCP connection establishment fails. A green Actions run therefore does not establish network reachability.
 
-Private repository: access remains limited to authorized readers.
-
-No README.md existed at the audited commit; the snapshot link therefore opens the recorded file tree.
-
-## Start with the sources
-
-- [Original technical documentation](README.md)
-- [Files at the audited commit](https://github.com/Juri-Halveth/jbl-wan-proof/tree/6630836365e85de06c548322520856a0e462cf7f)
-- [Repository and current files](https://github.com/Juri-Halveth/jbl-wan-proof)
+The companion repository retains separate September results: a gain-value change and restoration **75 → 74 → 75**, using an owner-created tunnel and supplied pairing material, and a direct TCP test that timed out. The report documents the precise conditions, missing product-version binding and unverified current fix status. No network test was rerun for this publication.
