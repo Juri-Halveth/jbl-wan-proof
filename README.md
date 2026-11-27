@@ -1,23 +1,25 @@
 [Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-# JBL WAN-Prüfablauf – Forschung von Juri
+# JBL WAN-Prüfablauf – ergänzende Forschung zu CERT@VDE #642251
 
-**Juri (Juri-Halveth) · Stand 27. November 2026**
+**Finder: Juri Janovski — HALVETH · Stand: 27. November 2026**
 
-Dieses Repository enthält den historischen externen TCP-/HTTP-Prüfablauf zu Juris JBL-Untersuchung. Der vollständige Bericht, die späteren Witness-Skripte und die vier erhaltenen September-Belege stehen im ergänzenden Repository:
+**Der zugrunde liegende lokale Sicherheitsbefund wurde durch das Engineering-Team validiert; JBL QuantumENGINE 2.7.8 ist laut CERT@VDE-Nachricht vom 24. September 2026 bestätigt betroffen.** Dieses Repository enthält zusätzliche Netzwerkprüfungen zu diesem Fall.
 
-**[Forschungsbericht und Belege öffnen](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/REPORT.md)**
+**[Vollständiger Bericht](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/REPORT.md)** · **[CERT@VDE-Bestätigung](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/evidence/CERT-VDE-CORRESPONDENCE.md)** · [Erratum](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/ERRATUM-20261127.md)
 
-## Was der Workflow erfasst
+## Hauptbefund und zusätzliche Versuche
 
-Der manuell gestartete [Workflow](.github/workflows/jbl-wan-proof.yml) versucht von einem GitHub-Runner aus eine TCP-Verbindung zum angegebenen Ziel auf Port 57120. Bei aufgebauter Verbindung sendet er eine WebSocket-Upgrade-Anfrage und liest die erste HTTP-Statuszeile.
+Der gemeldete lokale Befund betrifft einen Prozess ohne erhöhte Rechte, der über JBLs Remote-Control-IPC auf vorhandenen Pairing-Zustand zugreifen und diesen zur Änderung einer Headset-Einstellung wiederverwenden konnte. Die Engineering-Bestätigung dieses Falls ist von den hier untersuchten Netzwerkwegen zu unterscheiden.
 
-Die aktuelle Ausgabe unterscheidet eine aufgebaute Verbindung, eine nicht aufgebaute Verbindung und eine beobachtete HTTP-101-Statuszeile. **Eine Statuszeile allein verifiziert weder den vollständigen WebSocket-Handshake noch einen JBL-Dienst.** Die dafür vorgenommene Präzisierung ist in [PR #2](https://github.com/Juri-Halveth/jbl-wan-proof/pull/2) dokumentiert.
+Die erhaltenen September-Belege zeigen außerdem **75 → 74 → 75** für einen Gain-Wert über einen vom Eigentümer eingerichteten Tunnel mit bereitgestellten Pairingdaten. Der separate direkte TCP-Versuch endete im Timeout. Diese direkte Verbindungsprobe widerlegt den lokalen Befund nicht.
 
-## Historische Ergebnisse richtig lesen
+## Was dieser Workflow erfasst
 
-Die Joblogs der zwei August-Läufe waren bei der Prüfung am 27. November mit HTTP 410 nicht mehr abrufbar. Der Workflow kann auch bei fehlgeschlagenem TCP-Aufbau mit Exitcode 0 enden. Ein grüner Actions-Status ist deshalb kein Beleg für erfolgreiche Erreichbarkeit.
+Der manuell gestartete [Workflow](.github/workflows/jbl-wan-proof.yml) versucht eine TCP-Verbindung von einem GitHub-Runner zum angegebenen Ziel auf Port 57120. Bei aufgebauter Verbindung sendet er eine WebSocket-Upgrade-Anfrage und liest die erste HTTP-Statuszeile. Die in [PR #2](https://github.com/Juri-Halveth/jbl-wan-proof/pull/2) übernommene Präzisierung kennzeichnet eine HTTP-101-Statuszeile als solche; ein vollständiger Handshake oder die JBL-Dienstidentität sind damit nicht geprüft.
 
-Die später erhaltenen September-Logs im ergänzenden Repository zeigen einen getrennten Befund: **75 → 74 → 75** für einen Gain-Wert über einen vom Eigentümer eingerichteten Tunnel mit bereitgestellten Pairingdaten. Der separate direkte TCP-Versuch endete im Timeout. Die Zusammenhänge, offene Versionszuordnung und der nicht bestätigte aktuelle Fixstatus sind im vollständigen Bericht erklärt.
+Die Joblogs der zwei August-Läufe waren am 27. November mit HTTP 410 nicht mehr abrufbar. Der Workflow kann bei fehlgeschlagenem TCP-Aufbau mit Exitcode 0 enden. Ein grüner Actions-Status ist deshalb kein Nachweis erfolgreicher Erreichbarkeit.
 
-Für die Veröffentlichung wurden vorhandene Quellen und Logs ausgewertet. Es wurde kein neuer Workflow und keine neue Netzwerkprobe gestartet.
+## Koordination, Finder-Nennung und Prämie
+
+CERT@VDE sagte am **19. Oktober 2026** die Finder-Nennung zu. HARMANs separate Entscheidung, dass diese Einreichung nicht für eine Prämie unter dessen Bug-Bounty-Programm qualifiziert, widerruft die technische Bestätigung nicht. Der am 24. September genannte Fixrelease im **Dezember 2026** war eine Planung; eine ausgelieferte Fixversion und eine konkrete CVE-Nummer sind in der vorgelegten Korrespondenz nicht genannt. Alle maßgeblichen Auszüge stehen im verlinkten Bericht.
