@@ -4,7 +4,7 @@
 
 **Finder: Juri Janovski — HALVETH · Stand: 27. November 2026**
 
-**Der zugrunde liegende lokale Sicherheitsbefund wurde durch das Engineering-Team validiert; JBL QuantumENGINE 2.7.8 ist laut CERT@VDE-Nachricht vom 24. September 2026 bestätigt betroffen.** Dieses Repository enthält zusätzliche Netzwerkprüfungen zu diesem Fall.
+**Laut dem vom Finder bereitgestellten Korrespondenztext teilte CERT@VDE am 24. September 2026 mit, dass das Engineering-Team den zugrunde liegenden lokalen Sicherheitsbefund validiert hat und JBL QuantumENGINE 2.7.8 betroffen ist.** Dieses Repository enthält zusätzliche Netzwerkprüfungen zu diesem Fall.
 
 **[Vollständiger Bericht](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/REPORT.md)** · **[CERT@VDE-Bestätigung](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/evidence/CERT-VDE-CORRESPONDENCE.md)** · [Erratum](https://github.com/Juri-Halveth/jbl-owner-external-witness-20260901/blob/main/ERRATUM-20261127.md)
 
